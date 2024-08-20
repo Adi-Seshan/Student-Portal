@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            color: #333;
+        }
+        header {
+            background-color: #3f51b5; /* Changed to a different color */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #ffeb3b;
+        }
+        main {
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #3f51b5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Adjusted for spacing */
+            font-size: 2rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        h1 img {
+            border-radius: 50%;
+            max-width: 80px; /* Reduced size */
+            max-height: 80px; /* Reduced size */
+            border: 4px solid #3f51b5;
+            cursor: pointer;
+        }
+        .card-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .card, .attendance, .updates, .impressions {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            flex: 1;
+            min-width: 280px;
+            margin-bottom: 20px;
+        }
+        .card h2, .attendance h2, .updates h2, .impressions h2 {
+            color: #3f51b5;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #3f51b5;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .card ul, .attendance ul, .updates ul, .impressions ul {
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+        footer {
+            background-color: #3f51b5;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .quote {
+            text-align: center;
+            margin-bottom: 40px;
+            font-style: italic;
+            color: #555;
+        }
+        .attendance-chart, .grades-chart {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        #profile-photo-upload {
+            margin-top: 10px;
+            display: block;
+            cursor: pointer;
+        }
+        #profile-details {
+            margin-top: 20px;
+        }
+        #profile-details p {
+            font-size: 1rem;
+            color: #333;
+        }
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .profile-container img {
+            border-radius: 50%;
+            border: 3px solid #3f51b5;
+            max-width: 120px;
+            max-height: 120px;
+        }
+        .profile-container div {
+            flex: 1;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Ensure proper alignment */
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#assignments">Assignments</a></li>
+                <li><a href="#grades">Grades</a></li>
+                <li><a href="#profile">Profile</a></li>
+                <li><a href="#notifications">Notifications</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="dashboard">
+            <h1>Welcome, Ganyu
+                <input type="file" id="profile-photo-upload" accept="image/*" title="Upload Profile Photo">
+                <img src="profile.jpg" alt="Profile Photo" id="profile-photo">
+            </h1>
+            <p class="quote">"The future belongs to those who believe in the beauty of their dreams." - Eleanor Roosevelt</p>
+            <div class="card-container">
+                <div class="card">
+                    <h2>Upcoming Assignments</h2>
+                    <ul id="upcoming-assignments">
+                        <!-- Dynamically populated -->
+                    </ul>
+                </div>
+                <div class="card">
+                    <h2>Recent Grades</h2>
+                    <ul id="recent-grades">
+                        <!-- Dynamically populated -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="grades">
+            <h1>Grades</h1>
+            <div class="card-container">
+                <div class="card">
+                    <h2>Test Grades</h2>
+                    <canvas id="gradesChart" class="grades-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="profile">
+            <h1>Profile</h1>
+            <div class="card-container">
+                <div class="card profile-container">
+                    <div>
+                        <h2>Profile Details</h2>
+                        <img id="profile-photo" src="profile.jpg" alt="Profile Photo">
+                    </div>
+                    <div id="profile-details">
+                        <p><strong>Name:</strong> Ganyu</p>
+                        <p><strong>USN:</strong> 123456789</p>
+                        <p><strong>Address:</strong> 1234 Elm Street, Anytown, USA</p>
+                        <p><strong>Blood Group:</strong> O+</p>
+                        <p><strong>Emergency Contact:</strong> 987-654-3210</p>
+                        <p><strong>Parents' Phone Number:</strong> 555-123-4567</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="notifications">
+            <h1>Notifications</h1>
+            <div class="card-container">
+                <div class="card" id="notifications-list">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </section>
+
+        <section id="attendance">
+            <h1>Attendance</h1>
+            <div class="card-container">
+                <div class="attendance">
+                    <h2>Attendance Chart</h2>
+                    <canvas id="attendanceChart" class="attendance-chart"></canvas>
+                    <ul>
+                        <li>Math: 90%</li>
+                        <li>DBMS: 85%</li>
+                        <li>Java: 88%</li>
+                        <li>OS: 92%</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="teacher-updates">
+            <h1>Teacher Updates</h1>
+            <div class="card-container">
+                <div class="updates">
+                    <h2>Latest Updates</h2>
+                    <ul id="updates-list">
+                        <li>Science project deadline extended to next week.</li>
+                        <li>Extra class for Java on Monday at 3 PM.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="teacher-impressions">
+            <h1>Teacher Impressions</h1>
+            <div class="card-container">
+                <div class="impressions">
+                    <h2>Mentee Feedback</h2>
+                    <ul id="impressions-list">
+                        <li>Math Teacher: Great improvement in problem-solving skills.</li>
+                        <li>DBMS Teacher: Active participation in class discussions.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Student Portal &copy; 2024</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Mock data for demonstration
+            const assignments = [
+            { title: "Math Assignment 1", dueDate: "2024-07-30" },
+                { title: "History Essay", dueDate: "2024-08-05" },
+            ];
+            const grades = [
+                { course: "Math", grade: "A" },
+                { course: "DBMS", grade: "B+" },
+            ];
+            const notifications = [
+                { message: "New assignment posted for Math." },
+                { message: "Reminder: Submit your DBMS project by next Monday." },
+            ];
+
+            // Populate upcoming assignments
+            const upcomingAssignments = document.getElementById("upcoming-assignments");
+            assignments.forEach(assignment => {
+                const li = document.createElement("li");
+                li.textContent = `${assignment.title} - Due: ${assignment.dueDate}`;
+                upcomingAssignments.appendChild(li);
+            });
+
+            // Populate recent grades
+            const recentGrades = document.getElementById("recent-grades");
+            grades.forEach(grade => {
+                const li = document.createElement("li");
+                li.textContent = `${grade.course}: ${grade.grade}`;
+                recentGrades.appendChild(li);
+            });
+
+            // Populate notifications
+            const notificationsList = document.getElementById("notifications-list");
+            notifications.forEach(notification => {
+                const li = document.createElement("li");
+                li.textContent = notification.message;
+                notificationsList.appendChild(li);
+            });
+
+            // Profile photo upload
+            const profilePhotoUpload = document.getElementById("profile-photo-upload");
+            profilePhotoUpload.addEventListener("change", function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const profilePhoto = document.getElementById("profile-photo");
+                        profilePhoto.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Attendance chart
+            const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
+            const attendanceChart = new Chart(attendanceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Math', 'DBMS', 'Java', 'OS'],
+                    datasets: [{
+                        label: 'Attendance',
+                        data: [90, 85, 88, 92],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50'],
+                        borderColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Subject-wise Attendance'
+                        }
+                    }
+                }
+            });
+
+            // Grades chart
+            const gradesCtx = document.getElementById('gradesChart').getContext('2d');
+            const gradesChart = new Chart(gradesCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Test 1', 'Test 2', 'Test 3'],
+                    datasets: [
+                        {
+                            label: 'Math',
+                            data: [85, 90, 88],
+                            backgroundColor: '#FF6384'
+                        },
+                        {
+                            label: 'DBMS',
+                            data: [80, 85, 84],
+                            backgroundColor: '#36A2EB'
+                        },
+                        {
+                            label: 'Java',
+                            data: [88, 90, 87],
+                            backgroundColor: '#FFCE56'
+                        },
+                        {
+                            label: 'OS',
+                            data: [92, 95, 93],
+                            backgroundColor: '#4CAF50'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Test Grades'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

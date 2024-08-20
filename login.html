@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            color: #333;
+        }
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            width: 350px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .login-container h1 {
+            margin-bottom: 30px;
+            color: #2575fc;
+            font-size: 1.8rem;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .login-container button:hover {
+            background-color: #1e60c8;
+            transform: translateY(-3px);
+        }
+        .login-container p {
+            margin-top: 20px;
+            color: #f44336;
+            display: none;
+        }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.15);
+            z-index: 1;
+            pointer-events: none;
+            text-align: center;
+        }
+        .background-decor {
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: 50%;
+            z-index: 0;
+            animation: spin 20s linear infinite;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-decor"></div>
+    <div class="login-container">
+        <h1>Student Login</h1>
+        <form id="login-form">
+            <input type="text" id="usn" placeholder="Enter your USN" required>
+            <input type="text" id="sem" placeholder="Enter your Semester" required>
+            <input type="password" id="password" placeholder="Enter your Password" required>
+            <button type="submit">Login</button>
+            <p id="error-message">Incorrect password. Please try again.</p>
+        </form>
+    </div>
+    <div class="watermark">New Horizon Institutions</div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const password = document.getElementById('password').value;
+            if (password === '123') {
+                window.location.href = 'final.html'; // Redirect to the main page
+            } else {
+                document.getElementById('error-message').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

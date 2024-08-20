@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignments</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+        h1 {
+            color: #0288d1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .assignments-list {
+            margin: 20px auto;
+            max-width: 900px;
+        }
+        .assignment-item {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .assignment-item h2 {
+            margin: 0;
+            color: #0277bd;
+        }
+        .assignment-item p {
+            margin: 5px 0;
+        }
+        .submission-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .submit-btn {
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #0277bd;
+        }
+        .completion-bar-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .completion-bar {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            position: relative;
+        }
+        .completion-bar span {
+            display: block;
+            height: 25px;
+            width: 0;
+            background-color: #0288d1;
+            border-radius: 5px;
+            text-align: center;
+            color: white;
+            line-height: 25px;
+            font-weight: bold;
+        }
+        footer {
+            background-color: #0288d1;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .watermark {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0.3;
+            font-size: 1.5rem;
+            color: #0288d1;
+            z-index: -1;
+        }
+        .watermark img {
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Assignments</h1>
+    <div class="completion-bar-container">
+        <div class="completion-bar">
+            <span id="completion-progress">0%</span>
+        </div>
+    </div>
+    <div class="assignments-list">
+        <!-- Assignment items will be dynamically populated -->
+    </div>
+    <footer>
+        <p>Student Portal &copy; 2024</p>
+    </footer>
+    <div class="watermark">
+        <p>New Horizon Institutions</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const assignments = [
+                { title: "Math Assignment 1", dueDate: "2024-07-30", description: "Solve the problems in Chapter 5." },
+                { title: "History Essay", dueDate: "2024-08-05", description: "Write an essay on World War II." },
+                { title: "Science Project", dueDate: "2024-08-15", description: "Create a model of the solar system." },
+                { title: "English Literature Paper", dueDate: "2024-09-01", description: "Analyze Shakespeare's Hamlet." },
+                { title: "Database Management System Report", dueDate: "2024-09-10", description: "Prepare a report on the latest trends in DBMS." },
+                { title: "Java Programming Assignment", dueDate: "2024-09-20", description: "Develop a Java application for library management." },
+            ];
+
+            const assignmentsList = document.querySelector('.assignments-list');
+            const completionProgress = document.getElementById('completion-progress');
+            let totalAssignments = assignments.length;
+            let completedAssignments = 0;
+
+            assignments.forEach((assignment, index) => {
+                const assignmentItem = document.createElement('div');
+                assignmentItem.className = 'assignment-item';
+                
+                const assignmentTitle = document.createElement('h2');
+                assignmentTitle.textContent = assignment.title;
+                
+                const dueDate = document.createElement('p');
+                dueDate.textContent = `Due Date: ${assignment.dueDate}`;
+                
+                const description = document.createElement('p');
+                description.textContent = `Description: ${assignment.description}`;
+                
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.style.display = 'none';
+                
+                const submitButton = document.createElement('button');
+                submitButton.textContent = 'Submit Assignment';
+                submitButton.className = 'submit-btn';
+                submitButton.addEventListener('click', () => {
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        // Here you would typically handle the file upload
+                        completedAssignments++;
+                        updateCompletionBar();
+                    }
+                });
+
+                const submissionContainer = document.createElement('div');
+                submissionContainer.className = 'submission-container';
+                submissionContainer.appendChild(submitButton);
+                submissionContainer.appendChild(fileInput);
+                
+                assignmentItem.appendChild(assignmentTitle);
+                assignmentItem.appendChild(dueDate);
+                assignmentItem.appendChild(description);
+                assignmentItem.appendChild(submissionContainer);
+                
+                assignmentsList.appendChild(assignmentItem);
+            });
+
+            function updateCompletionBar() {
+                const completionPercentage = Math.round((completedAssignments / totalAssignments) * 100);
+                completionProgress.textContent = `${completionPercentage}%`;
+                document.querySelector('.completion-bar span').style.width = `${completionPercentage}%`;
+            }
+        });
+    </script>
+</body>
+</html>
